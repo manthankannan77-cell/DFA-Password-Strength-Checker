@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DFA Password Strength Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="12" cy="24" r="5"/><circle cx="35" cy="12" r="5"/><circle cx="35" cy="36" r="5"/><path d="M16 22 30 14M16 26l14 8"/></svg></div>
+    <div class="brand-copy"><h1>DFA Password Strength Checker</h1><p>Theory of Computation · Project 2 · a finite automaton rates your password as you type</p></div>
+    <nav class="nav-pills"><a href="#checker">Checker</a><a href="#tracePanel">Trace</a><a href="#tests">Test suite</a><a href="#compare">Compare</a><a href="#theory">Theory</a></nav>
+  </header>
+
+  <main class="layout">
+    <section class="panel checker" id="checker">
+      <div class="panel-title"><span>TRY A PASSWORD</span><span class="muted">RUNS LOCALLY IN YOUR BROWSER</span></div>
+      <div class="password-wrap"><input id="password" type="password" placeholder="Type a password..." autocomplete="new-password" spellcheck="false" aria-label="Type a password"><button id="togglePassword" aria-label="Show password" title="Show password">◉</button></div>
+      <div class="meter"><span id="meterFill"></span><span></span><span></span></div>
+      <div class="strength-row"><div><h2 id="strengthLabel">Waiting</h2><p id="strengthHint">Start typing to feed the automaton.</p></div><span class="state-badge" id="currentState">q000</span></div>
+      <div class="checks">
+        <div class="check-item" id="lengthCheck"><span class="check-icon">×</span><div><b>Length of at least 8</b><div class="check-progress"><span id="lengthProgress"></span></div></div><small id="lengthCount">0/8</small></div>
+        <div class="check-item" id="digitCheck"><span class="check-icon">×</span><b>Contains a digit</b></div>
+        <div class="check-item" id="specialCheck"><span class="check-icon">×</span><b>Contains a special character</b></div>
+      </div>
+      <div class="quick-samples"><div class="small-heading">QUICK SAMPLES</div>
+        <div class="sample-list"><button data-sample="abc">abc</button><button data-sample="abcdef12">abcdef12</button><button data-sample="Abcdef12!">Abcdef12!</button><button data-sample="Passw0rd">Passw0rd</button><button data-sample="correcthorsebatterystaple">correcthorsebatterystaple</button></div>
+      </div>
+      <div class="transition-note"><span class="small-heading">LATEST TRANSITION</span><b id="transitionText">Start state → q000 (empty password)</b></div>
+    </section>
+
+    <section class="panel diagram-panel">
+      <div class="panel-title"><span>LIVE STATE DIAGRAM</span><span class="muted" id="diagramState">Q0 · NO FLAGS</span></div>
+      <div class="diagram-wrap">
+        <svg id="dfaDiagram" viewBox="0 0 760 400" role="img" aria-label="Interactive eight-state DFA diagram">
+          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#788397"/></marker></defs>
+          <g id="edges"></g><g id="nodes"></g>
+        </svg>
+      </div>
+      <div class="diagram-legend"><span><i class="weak-dot"></i> Weak (q000–q100)</span><span><i class="medium-dot"></i> Medium (q101, q110)</span><span><i class="strong-dot"></i> Strong (q111, double ring)</span></div>
+      <p class="diagram-caption">Top row: fewer than 8 characters. Bottom row: 8 or more. The 8th character moves the machine down a row (and also sets a digit or special flag if it is one). Letters and repeated flags keep the machine in the same state, so those self-loops are not drawn. Bright glowing states and lines show the path your password has taken.</p>
+    </section>
+
+    <section class="panel lower-panel" id="tracePanel"><div class="panel-title"><span>CHARACTER-BY-CHARACTER TRACE</span><span class="muted">STATE HISTORY</span></div><div id="trace" class="trace-list"><span class="empty-trace">Start typing to see the trace.</span></div></section>
+    <section class="panel lower-panel" id="tests"><div class="panel-title"><span>TEST SUITE</span><span class="muted">QUICK VALIDATION</span></div><div class="test-list"><span>abc <b>Weak</b></span><span>abcdef12 <b>Medium</b></span><span>abcdefgh! <b>Medium</b></span><span>Abcdef12! <b>Strong</b></span></div></section>
+    <section class="panel lower-panel" id="compare"><div class="panel-title"><span>STRENGTH RULES</span><span class="muted">OUTPUT CLASSIFICATION</span></div><div class="rule-row"><span class="weak-text">Weak: missing one or more requirements</span><span class="medium-text">Medium: 8+ chars and digit or special</span><span class="strong-text">Strong: all three requirements</span></div></section>
+    <section class="panel lower-panel" id="theory"><div class="panel-title"><span>THEORY OF COMPUTATION</span><span class="muted">DFA / MOORE MACHINE</span></div><p class="theory-copy">The DFA tracks three monotonic flags: L = length ≥ 8, D = a digit has appeared, and S = a special character has appeared. Each combination is a state qLDS. The state output determines the displayed strength. This is an educational demonstration, not a complete security audit.</p></section>
+  </main>
+  <footer>Python · Flask · HTML · CSS · JavaScript · Deterministic Finite Automaton</footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

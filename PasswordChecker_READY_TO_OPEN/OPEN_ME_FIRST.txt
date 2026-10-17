@@ -1,0 +1,22 @@
+PASSWORD STRENGTH CHECKER — OPEN THIS PROJECT
+
+1. Extract this ZIP first (right-click ZIP > Extract All).
+2. Open VS Code. Choose File > Open Folder.
+3. Select the extracted folder named PasswordChecker_READY_TO_OPEN.
+4. In VS Code choose Terminal > New Terminal.
+5. Run these commands one at a time:
+
+   py -m pip install -r requirements.txt
+   py app.py
+
+6. Keep the terminal open. In Chrome visit: http://127.0.0.1:5000
+7. Do NOT use Live Server / port 5500. This project runs with Flask on port 5000.
+
+Files to edit later:
+- templates/index.html  (webpage structure)
+- static/style.css      (design and colors)
+- static/app.js         (live interactions and diagram)
+- dfa_engine.py         (DFA logic)
+- app.py                (Flask server)
+
+If Flask is already running in the terminal, press Ctrl+C before running py app.py again.
